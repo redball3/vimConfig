@@ -9,7 +9,8 @@ return {
     },
     {
         "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate"
+        build = ":TSUpdate",
+        lazy = false
     },
     {
         "ThePrimeagen/harpoon",

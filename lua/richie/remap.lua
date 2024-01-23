@@ -1,7 +1,7 @@
 vim.g.mapleader = " "
 
 vim.keymap.set("n", "<leader>pv", "<cmd>NvimTreeFocus<CR>", { desc = "Jump to NvimTree" })
-vim.keymap.set("n", "<leader><C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle NvimTree" })
+vim.keymap.set("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle NvimTree" })
 vim.keymap.set("n", "<leader>pv", "<cmd>NvimTreeFindFile<CR>", { desc = "Jump to file in NvimTreee" })
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
