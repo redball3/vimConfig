@@ -3,6 +3,7 @@ neotest = require("neotest")
 local gotest = require("neotest-go")
 local rusttest = require("neotest-rust")
 
+
 neotest.setup({
     adapters = {
         gotest,
@@ -18,7 +19,7 @@ neotest.setup({
 local root_patterns = { "go.mod", "Cargo.toml" }
 local root_dir = vim.fs.dirname(vim.fs.find(root_patterns, { upward = true })[1])
 
-local runallTests = function() 
+local runallTests = function()
     neotest.run.run(root_dir)
 end
 

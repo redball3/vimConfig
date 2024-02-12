@@ -41,7 +41,20 @@ return {
             "antoinemadec/FixCursorHold.nvim",
             "nvim-neotest/neotest-go",
             "rouge8/neotest-rust",
-        }
+        },
+        config = function()
+            -- get neotest namespace (api call creates or returns namespace)
+            local neotest_ns = vim.api.nvim_create_namespace("neotest")
+            vim.diagnostic.config({
+                virtual_text = {
+                    format = function(diagnostic)
+                        local message =
+                            diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
+                        return message
+                    end,
+                },
+            }, neotest_ns)
+        end
     },
     { "lukas-reineke/indent-blankline.nvim" },
     {
@@ -62,5 +75,10 @@ return {
             vim.o.timeout = true
             vim.o.timeoutlen = 300
         end
+    },
+    {
+        "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
     }
+
 }

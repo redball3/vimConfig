@@ -1,14 +1,14 @@
 require("catppuccin").setup({
-	flavour = "mocha",
-	transparent_background = false,
+    flavour = "mocha",
+    transparent_background = true,
     highlight_overrides = {
-        all = function (colours)
-           return {
-               LineNr = {
-                   fg = colours.white,
-                   bg = colours.white
-               }
-           }
+        all = function(colours)
+            return {
+                LineNr = {
+                    fg = colours.white,
+                    bg = colours.white
+                }
+            }
         end
     }
 })
