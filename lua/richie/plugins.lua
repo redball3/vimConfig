@@ -88,8 +88,27 @@ return {
         ft = { "scala", "sbt", "java" },
         opts = function()
             local metals_config = require("metals").bare_config()
+
+            metals_config.settings = {
+                enableSemanticHighlighting = true,
+                showImplicitArguments = true,
+                showInferredType = true,
+                superMethodLensesEnabled = true,
+                showImplicitConversionsAndClasses = true,
+            }
+            metals_config.init_options.statusBarProvider = "on"
+            -- Example if you are using cmp how to make sure the correct capabilities for snippets are set
+
             metals_config.on_attach = function(client, bufnr)
                 local opts = { buffer = bufnr, remap = false }
+
+                local signature_setup = {
+                    bind = true, -- This is mandatory, otherwise border config won't get registered.
+                    handler_opts = {
+                        border = "rounded"
+                    }
+                }
+                require("lsp_signature").on_attach(signature_setup, bufnr)
                 vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
                 vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
                 vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
@@ -114,6 +133,11 @@ return {
                 group = nvim_metals_group,
             })
         end
+    },
+    {
+        "ray-x/lsp_signature.nvim",
+        event = "VeryLazy",
+        opts = {},
+        config = function(_, opts) require 'lsp_signature'.setup(opts) end
     }
-
 }

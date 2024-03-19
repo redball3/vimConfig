@@ -3,6 +3,14 @@ local lsp_zero = require('lsp-zero')
 lsp_zero.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
+    local signature_setup = {
+        bind = true, -- This is mandatory, otherwise border config won't get registered.
+        handler_opts = {
+            border = "rounded"
+        }
+    }
+    require("lsp_signature").on_attach(signature_setup, bufnr)
+
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
@@ -33,6 +41,11 @@ require('mason-lspconfig').setup({
 })
 
 local cmp = require('cmp')
+require 'cmp'.setup {
+    sources = {
+        { name = 'nvim_lsp_signature_help' }
+    }
+}
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
