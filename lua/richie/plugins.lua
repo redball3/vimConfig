@@ -37,6 +37,7 @@ return {
     {
         "nvim-neotest/neotest",
         dependencies = {
+            "nvim-neotest/nvim-nio",
             "nvim-lua/plenary.nvim",
             "antoinemadec/FixCursorHold.nvim",
             "nvim-neotest/neotest-go",
@@ -87,7 +88,8 @@ return {
         },
         ft = { "scala", "sbt", "java" },
         opts = function()
-            local metals_config = require("metals").bare_config()
+            local metals = require("metals")
+            local metals_config = metals.bare_config()
 
             metals_config.settings = {
                 enableSemanticHighlighting = true,
@@ -119,6 +121,7 @@ return {
                 vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
                 vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
                 vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+                vim.keymap.set("n", "<leader>oo", function() require("telescope").extensions.metals.commands() end, opts)
             end
 
             return metals_config
