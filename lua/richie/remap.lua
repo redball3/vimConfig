@@ -13,6 +13,7 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
+vim.keymap.set("n", "<leader>jq", ":%!jq .<CR>", { desc = "format file with jq" })
 
 -- greatest remap ever
 vim.keymap.set("x", "<leader>p", [["_dP]])
@@ -38,9 +39,37 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
-vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.dotfiles/nvim/.config/nvim/lua/theprimeagen/packer.lua<CR>");
-vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");
-
 vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
+
+-- Term Toggle Function
+local term_buf = nil
+local term_win = nil
+
+function TermToggle(height)
+    if term_win and vim.api.nvim_win_is_valid(term_win) then
+        vim.cmd("hide")
+    else
+        vim.cmd("botright new")
+        local new_buf = vim.api.nvim_get_current_buf()
+        vim.cmd("resize " .. height)
+        if term_buf and vim.api.nvim_buf_is_valid(term_buf) then
+            vim.cmd("buffer " .. term_buf) -- go to terminal buffer
+            vim.cmd("bd " .. new_buf)      -- cleanup new buffer
+        else
+            vim.cmd("terminal")
+            term_buf = vim.api.nvim_get_current_buf()
+            vim.wo.number = false
+            vim.wo.relativenumber = false
+            vim.wo.signcolumn = "no"
+        end
+        vim.cmd("startinsert!")
+        term_win = vim.api.nvim_get_current_win()
+    end
+end
+
+-- Term Toggle Keymaps
+vim.keymap.set("n", "<A-t>", ":lua TermToggle(20)<CR>", { noremap = true, silent = true })
+vim.keymap.set("i", "<A-t>", "<Esc>:lua TermToggle(20)<CR>", { noremap = true, silent = true })
+vim.keymap.set("t", "<A-t>", "<C-\\><C-n>:lua TermToggle(20)<CR>", { noremap = true, silent = true })

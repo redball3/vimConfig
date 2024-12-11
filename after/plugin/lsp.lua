@@ -4,11 +4,26 @@ lsp_zero.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
     local signature_setup = {
-        bind = true, -- This is mandatory, otherwise border config won't get registered.
-        handler_opts = {
-            border = "rounded"
-        }
+        floating_window_off_x = 5,                           -- adjust float windows x position.
+        floating_window_off_y = function()                   -- adjust float windows y position. e.g. set to -2 can make floating window move up 2 lines
+            local linenr = vim.api.nvim_win_get_cursor(0)[1] -- buf line number
+            local pumheight = vim.o.pumheight
+            local winline = vim.fn.winline()                 -- line number in the window
+            local winheight = vim.fn.winheight(0)
+
+            -- window top
+            if winline - 1 < pumheight then
+                return pumheight
+            end
+
+            -- window bottom
+            if winheight - winline < pumheight then
+                return -pumheight
+            end
+            return 0
+        end,
     }
+    require "lsp_signature".setup(cfg)
     require("lsp_signature").on_attach(signature_setup, bufnr)
 
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
@@ -26,7 +41,7 @@ end)
 require('mason').setup({})
 require('mason-lspconfig').setup({
     ensure_installed = ({
-        'tsserver',
+        'ts_ls',
         'rust_analyzer',
         'gopls',
         'lua_ls',
@@ -56,6 +71,7 @@ cmp.setup({
         { name = 'path' },
         { name = 'nvim_lsp' },
         { name = 'nvim_lua' },
+        { name = 'copilot' }
     },
     formatting = lsp_zero.cmp_format(),
     mapping = cmp.mapping.preset.insert({

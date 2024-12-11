@@ -23,6 +23,22 @@ return {
         event = "InsertEnter",
     },
     {
+        "zbirenbaum/copilot-cmp",
+        event = "InsertEnter",
+        config = function() require("copilot_cmp").setup() end,
+        dependencies = {
+            "zbirenbaum/copilot.lua",
+            cmd = "Copilot",
+            config = function()
+                require("copilot").setup({
+                    suggestion = { enabled = false },
+                    panel = { enabled = false },
+                })
+            end,
+        },
+    },
+
+    {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v3.x',
         dependencies = {
@@ -42,6 +58,7 @@ return {
             "antoinemadec/FixCursorHold.nvim",
             "nvim-neotest/neotest-go",
             "rouge8/neotest-rust",
+            "stevanmilic/neotest-scala"
         },
         config = function()
             -- get neotest namespace (api call creates or returns namespace)
@@ -121,6 +138,7 @@ return {
                 vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
                 vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
                 vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+                vim.keymap.set("v", "<C-K>", function() vim.lsp.buf.hover() end, opts)
                 vim.keymap.set("n", "<leader>oo", function() require("telescope").extensions.metals.commands() end, opts)
             end
 
@@ -142,5 +160,21 @@ return {
         event = "VeryLazy",
         opts = {},
         config = function(_, opts) require 'lsp_signature'.setup(opts) end
+    },
+    {
+        'rmagatti/auto-session',
+        lazy = false,
+
+        ---enables autocomplete for opts
+        opts = {
+            suppressed_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
+            -- log_level = 'debug',
+        }
+    },
+    {
+        'numToStr/Comment.nvim',
+        opts = {
+            -- add any options here
+        }
     }
 }
