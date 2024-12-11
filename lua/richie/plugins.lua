@@ -18,26 +18,11 @@ return {
     },
     { "mbbill/undotree" },
     { "tpope/vim-fugitive" },
+    { "github/copilot.vim" },
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
     },
-    {
-        "zbirenbaum/copilot-cmp",
-        event = "InsertEnter",
-        config = function() require("copilot_cmp").setup() end,
-        dependencies = {
-            "zbirenbaum/copilot.lua",
-            cmd = "Copilot",
-            config = function()
-                require("copilot").setup({
-                    suggestion = { enabled = false },
-                    panel = { enabled = false },
-                })
-            end,
-        },
-    },
-
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v3.x',
@@ -58,7 +43,6 @@ return {
             "antoinemadec/FixCursorHold.nvim",
             "nvim-neotest/neotest-go",
             "rouge8/neotest-rust",
-            "stevanmilic/neotest-scala"
         },
         config = function()
             -- get neotest namespace (api call creates or returns namespace)
