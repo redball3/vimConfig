@@ -43,8 +43,9 @@ require('mason-lspconfig').setup({
     ensure_installed = ({
         'ts_ls',
         'rust_analyzer',
-        'gopls',
         'lua_ls',
+        'erlangls',
+        'cucumber_language_server'
     }),
     handlers = {
         lsp_zero.default_setup,
@@ -54,6 +55,7 @@ require('mason-lspconfig').setup({
         end,
     }
 })
+
 
 local cmp = require('cmp')
 require 'cmp'.setup {
@@ -82,4 +84,17 @@ cmp.setup({
     }),
 })
 
-vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
+require 'lspconfig'.erlangls.setup {
+    filetypes = { 'erlang', 'erl', 'term' },
+}
+
+require 'lspconfig'.cucumber_language_server.setup {
+    on_attach = function(client, bufnr)
+        settings = {
+            cucumber = {
+                features = { "**/*.feature" },
+                glue = { "**/steps/*.ts", "**/stepdefinitions/*.ts" },
+            },
+        }
+    end
+}
